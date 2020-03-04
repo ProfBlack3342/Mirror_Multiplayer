@@ -4,26 +4,47 @@ using UnityEngine;
 
 public class PlayerPickup : MonoBehaviour
 {
-    public Transform itemPosition;
-
     private bool isCarrying = false;
-    [SerializeField]
-    private GameObject collectable;
+
+    [SerializeField]private GameObject pickup;
+
+    public Transform itemPosition;
 
     private void Update()
     {
         if(Input.GetKeyDown(KeyCode.E))
         {
-            Collect();
+            if (!isCarrying) //isCarrying == false
+            {
+                Collect();
+            }
+            else
+            {
+                Drop();
+            }
+        }
+    }
+    //[Command]
+    void Collect()
+    {
+        if(pickup != null)
+        {
+            pickup.transform.parent = itemPosition;
+            pickup.transform.localPosition = Vector3.zero;
+
+            isCarrying = true;
         }
     }
 
-    private void Collect()
+    //[Command]
+    void Drop()
     {
-        if(collectable != null)
+        if(pickup != null)
         {
-            collectable.transform.parent = itemPosition;
-            collectable.transform.localPosition = Vector3.zero;
+            pickup.transform.parent = null;
+            pickup.transform.position = transform.position;
+
+            isCarrying = false;
         }
     }
 
@@ -31,7 +52,22 @@ public class PlayerPickup : MonoBehaviour
     {
         if(other.tag == "Collectable")
         {
-            collectable = other.gameObject;
+            if(!isCarrying)
+                pickup = other.gameObject;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if(other.tag == "Collectable")
+        {
+            if(pickup != null && pickup == other.gameObject)
+            {
+                if(!isCarrying)
+                {
+                    pickup = null;
+                }
+            }
         }
     }
 }
