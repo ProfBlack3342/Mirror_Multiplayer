@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class PlayerPickup : MonoBehaviour
 {
-    public GameObject sphere;
+    private GameObject sphere;
+    private Rigidbody sphereRB;
+    public GameObject carryspot;
     private bool pickedup;
 
     private void Awake()
@@ -18,24 +20,37 @@ public class PlayerPickup : MonoBehaviour
         {
             if(other.tag == "Sphere")
             {
-                if(!pickedup)
-                {
-                    sphere = other.gameObject;
-                    pickedup = true;
-                }
-                else
-                {
-                    pickedup = false;
-                }
+                    PickUp(other.gameObject);
             }
         }
+    }
+
+    private void PickUp(GameObject other)
+    {
+        if (!pickedup)
+        {
+            sphere = other.gameObject;
+            pickedup = true;
+            sphereRB = sphere.GetComponent<Rigidbody>();
+            sphereRB.useGravity = false;
+        }
+        else
+        {
+            LetGo();
+        }
+    }
+
+    private void LetGo()
+    {
+        pickedup = false;
+        sphereRB.useGravity = true;
     }
 
     private void FixedUpdate()
     {
         if(pickedup)
         {
-            sphere.transform.position = gameObject.transform.position;
+            sphere.transform.position = carryspot.transform.position;
         }
     }
 }
