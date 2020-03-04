@@ -1,31 +1,54 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
 
 namespace Prototipo.Multiplayer
 {
-    public class PlayerPickup : MonoBehaviour
+    public class PlayerPickup : NetworkBehaviour
     {
-        public Transform itemPosition;
-
         private bool isCarrying = false;
-        [SerializeField]
-        private GameObject collectable;
+
+        [SerializeField] private GameObject pickup;
+
+        public Transform itemPosition;
 
         private void Update()
         {
             if (Input.GetKeyDown(KeyCode.E))
             {
-                Collect();
+                if (!isCarrying) //isCarrying == false
+                {
+                    CmdCollect();
+                }
+                else
+                {
+                    CmdDrop();
+                }
             }
         }
 
-        private void Collect()
+        [Command]
+        void CmdCollect()
         {
-            if (collectable != null)
+            if (pickup != null)
             {
-                collectable.transform.parent = itemPosition;
-                collectable.transform.localPosition = Vector3.zero;
+                pickup.transform.parent = itemPosition;
+                pickup.transform.localPosition = Vector3.zero;
+
+                isCarrying = true;
+            }
+        }
+
+        [Command]
+        void CmdDrop()
+        {
+            if (pickup != null)
+            {
+                pickup.transform.parent = null;
+                pickup.transform.position = transform.position;
+
+                isCarrying = false;
             }
         }
 
@@ -33,7 +56,22 @@ namespace Prototipo.Multiplayer
         {
             if (other.tag == "Collectable")
             {
-                collectable = other.gameObject;
+                if (!isCarrying)
+                    pickup = other.gameObject;
+            }
+        }
+
+        private void OnTriggerExit(Collider other)
+        {
+            if (other.tag == "Collectable")
+            {
+                if (pickup != null && pickup == other.gameObject)
+                {
+                    if (!isCarrying)
+                    {
+                        pickup = null;
+                    }
+                }
             }
         }
     }
