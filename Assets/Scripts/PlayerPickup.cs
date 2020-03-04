@@ -14,9 +14,9 @@ public class PlayerPickup : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.tag == "Sphere")
+        if(Input.GetKeyDown(KeyCode.E))
         {
-            if(Input.GetKeyDown(KeyCode.E))
+            if(other.tag == "Sphere")
             {
                 if(!pickedup)
                 {
