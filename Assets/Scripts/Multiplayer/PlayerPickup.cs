@@ -15,15 +15,22 @@ namespace Prototipo.Multiplayer
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.E))
+            if(!isLocalPlayer)
             {
-                if (!isCarrying) //isCarrying == false
+                return;
+            }
+            else
+            {
+                if (Input.GetKeyDown(KeyCode.E))
                 {
-                    CmdCollect();
-                }
-                else
-                {
-                    CmdDrop();
+                    if (!isCarrying) //isCarrying == false
+                    {
+                        CmdCollect();
+                    }
+                    else
+                    {
+                        CmdDrop();
+                    }
                 }
             }
         }

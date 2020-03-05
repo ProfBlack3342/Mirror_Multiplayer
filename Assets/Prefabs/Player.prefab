@@ -123,7 +123,7 @@ BoxCollider:
   m_GameObject: {fileID: 9191330865074343288}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -139,9 +139,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneId: 2820596288
+  sceneId: 0
   serverOnly: 0
-  m_AssetId: 
+  m_AssetId: a1cfdebef0c93cd47aed4f10b2684fbc
 --- !u!54 &2387756350970121217
 Rigidbody:
   m_ObjectHideFlags: 0
