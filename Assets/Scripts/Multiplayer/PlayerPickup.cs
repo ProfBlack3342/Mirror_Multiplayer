@@ -10,8 +10,15 @@ namespace Prototipo.Multiplayer
         private bool isCarrying = false;
 
         [SerializeField] private GameObject pickup;
+        [SerializeField] private GameObject sphere;
+        private SphereState sphereS;
 
         public Transform itemPosition;
+
+        private void Awake()
+        {
+            sphere.SetActive(false);
+        }
 
         private void Update()
         {
@@ -23,14 +30,14 @@ namespace Prototipo.Multiplayer
             {
                 if (Input.GetKeyDown(KeyCode.E))
                 {
-                    if (!isCarrying) //isCarrying == false
-                    {
-                        CmdCollect();
-                    }
-                    else
-                    {
-                        CmdDrop();
-                    }
+                        if (!isCarrying) //isCarrying == false
+                        {
+                            CmdCollect();
+                        }
+                        else
+                        {
+                            CmdDrop();
+                        }
                 }
             }
         }
@@ -38,24 +45,34 @@ namespace Prototipo.Multiplayer
         [Command]
         void CmdCollect()
         {
-            if (pickup != null)
+            if (!sphereS.getIsCarried())
             {
-                pickup.transform.parent = itemPosition;
-                pickup.transform.localPosition = Vector3.zero;
-
-                isCarrying = true;
+                if (pickup != null)
+                {
+                    sphere.SetActive(true);
+                    isCarrying = true;
+                    sphereS.SetIsCarried(true);
+                    pickup.SetActive(false);
+                }
             }
         }
 
         [Command]
         void CmdDrop()
         {
-            if (pickup != null)
+            if (sphereS.getIsCarried())
             {
-                pickup.transform.parent = null;
-                pickup.transform.position = transform.position;
+                if (pickup != null)
+                {
+                    sphere.SetActive(false);
+                    pickup.SetActive(true);
 
-                isCarrying = false;
+                    pickup.transform.position = gameObject.transform.position;
+
+                    isCarrying = false;
+                    sphereS.SetIsCarried(false);
+                    pickup = null;
+                }
             }
         }
 
@@ -64,7 +81,10 @@ namespace Prototipo.Multiplayer
             if (other.tag == "Collectable")
             {
                 if (!isCarrying)
+                {
                     pickup = other.gameObject;
+                    sphereS = pickup.GetComponent<SphereState>();
+                }
             }
         }
 
@@ -77,9 +97,11 @@ namespace Prototipo.Multiplayer
                     if (!isCarrying)
                     {
                         pickup = null;
+                        sphereS = null;
                     }
                 }
             }
         }
     }
 }
+
