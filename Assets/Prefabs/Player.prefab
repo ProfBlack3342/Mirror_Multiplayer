@@ -124,6 +124,7 @@ GameObject:
   - component: {fileID: 822331662366032855}
   - component: {fileID: 7190936923335470788}
   - component: {fileID: 2461215728630167260}
+  - component: {fileID: 2471714207365499867}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -288,3 +289,17 @@ MonoBehaviour:
   pickup: {fileID: 0}
   sphere: {fileID: 3174840053396881679}
   itemPosition: {fileID: 6278792708493366637}
+--- !u!114 &2471714207365499867
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9191330865074343288}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d0c4feedae3a154080f0e5f693180c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1

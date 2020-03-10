@@ -6,17 +6,33 @@ using Mirror;
 public class PlayerColor : NetworkBehaviour
 {
     private Renderer playerRenderer;
-    private Material playerMaterial;
     private Color playerColor;
 
     private void Awake()
     {
         playerRenderer = GetComponent<Renderer>();
-        playerMaterial = GetComponent<Material>();
     }
 
-    public override void OnStartClient()
+    public override void OnStartLocalPlayer()
     {
-        base.OnStartClient();
+        base.OnStartLocalPlayer();
+        CmdSetColor();
+    }
+
+    [Command]
+    private void CmdSetColor()
+    {
+        RpcSetColor();
+    }
+
+    [ClientRpc]
+    private void RpcSetColor()
+    {
+        SetColor(Color.red);
+    }
+
+    private void SetColor(Color color)
+    {
+        playerRenderer.material.color = color;
     }
 }
