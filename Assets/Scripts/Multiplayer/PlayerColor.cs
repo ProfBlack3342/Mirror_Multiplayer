@@ -6,6 +6,8 @@ using Mirror;
 public class PlayerColor : NetworkBehaviour
 {
     private Renderer playerRenderer;
+
+    [SyncVar(hook = SetColor)]
     private Color playerColor;
 
     private void Awake()
@@ -22,17 +24,22 @@ public class PlayerColor : NetworkBehaviour
     [Command]
     private void CmdSetColor()
     {
-        RpcSetColor();
+        RpcSetColor(Color.red);
     }
 
     [ClientRpc]
-    private void RpcSetColor()
+    private void RpcSetColor(Color color)
     {
-        SetColor(Color.red);
+        SetColor(playerColor, color);
     }
 
-    private void SetColor(Color color)
+    private void SetColor(Color oldcolor, Color newcolor)
     {
-        playerRenderer.material.color = color;
+        playerRenderer.material.color = newcolor;
+    }
+
+    public void ChangeColor()
+    {
+
     }
 }
